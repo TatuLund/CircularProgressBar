@@ -30,7 +30,7 @@ public class View extends VerticalLayout implements AppShellConfigurator {
                 } catch (InterruptedException e) {
                 }
                 getUI().ifPresent(ui -> ui.access(() -> {
-                    progress.setPercent(percent.getAndAdd(5));
+                    progress.setPercent(percent.getAndAdd(5)/100.0);
                     if (percent.get() <= 25) {
                         progress.setColor("red");
                     } else if (percent.get() <= 50) {
