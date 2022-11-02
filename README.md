@@ -1,12 +1,8 @@
-# Add-on starter for a Lit based web component integration
+# CircularProgressBar
 
-This is an example project for creating a Java wrapper for an existing Lit component that is available in npm.
-The example code integrates `@axa-ch/input-text`.
+This is a circular shaped progress indicator for Vaadom 23 made as web component using Svg and Lit.
 
-Alternatively, using [this Lit-based project template](https://github.com/vaadin/addon-starter-lit-flow), 
-you can make a self-contained Vaadin-addon (i.e. without npm package, but Lit code integrated to the add-on). 
-If you wish to create a composite Vaadin add-on from existing Java 
-components or to for example wrap non-npm JS component, look at the minimalistic [the add-on starter template](https://github.com/vaadin/addon-starter-flow) instead.
+This add-on is inspired by https://vaadin.com/directory/component/circular-progressbar-add-on1
 
 ## Development instructions
 
@@ -31,6 +27,6 @@ mvn versions:set -DnewVersion=1.0.0 # You cannot publish snapshot versions
 mvn install -Pdirectory
 ```
 
-The package is created as `target/axa-input-text-1.0.0.zip`
+The package is created as `target/circular-progress-bar-flow-1.0.0.zip`
 
 For more information or to upload the package, visit https://vaadin.com/directory/my-components?uploadNewComponent
