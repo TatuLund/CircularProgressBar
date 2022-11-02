@@ -11,6 +11,9 @@ export class CircularProgressBar extends LitElement {
 	percent = 0;
 
 	@property()
+	delay = 10;
+
+	@property()
 	label : string | null = null;
 
   	@property({reflect: true})
@@ -34,7 +37,11 @@ export class CircularProgressBar extends LitElement {
 		if (this.label) {
 			this.updateLabel(this.label);
 		}
+		if (this.animation) {
 		this.animateProgress(this.percent, this.scale);
+		} else {
+		this.setProgress(this.percent, this.scale);			
+		}
 	}
 
 	updateLabel(labelText : string) : void {
@@ -48,7 +55,20 @@ export class CircularProgressBar extends LitElement {
             labelElement.textContent = labelText;
         }
     }
-	
+
+	setProgress(percent : number, scale : number) {
+        
+        const progressBorder = this.circularProgressbar.querySelector('#progress-border');
+        const progressInner = this.circularProgressbar.querySelector('#progress-inner');
+        const text = this.circularProgressbar.querySelector('#count');
+
+        progressBorder?.setAttribute('stroke-dasharray', 251.2 * percent * scale + ',251.2');
+        progressInner?.setAttribute('stroke-dasharray', 251.2 * percent * scale + ',251.2');
+        if (text) {
+	        text.textContent = Math.round(percent * 100) + '%';
+	    }
+    }
+
 	animateProgress(percent : number, scale : number) {
         
         const progressBorder = this.circularProgressbar.querySelector('#progress-border');
@@ -59,7 +79,7 @@ export class CircularProgressBar extends LitElement {
 		if (animationStepString) {
            	animationStep = parseInt(animationStepString);
 		}
-		const id = setInterval(frame, 5);
+		const id = setInterval(frame, this.delay);
         const grow = animationStep < (251.2 * percent);
 
         function frame() {

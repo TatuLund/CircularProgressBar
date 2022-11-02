@@ -140,7 +140,15 @@
     "webpack-merge": "4.2.2",
     "workbox-core": "6.5.0",
     "workbox-precaching": "6.5.0",
-    "workbox-webpack-plugin": "6.5.0"
+    "workbox-webpack-plugin": "6.5.0",
+    "workbox-build": "6.5.0",
+    "@rollup/plugin-replace": "3.1.0",
+    "mkdirp": "1.0.4",
+    "vite": "v3.1.0",
+    "rollup-plugin-brotli": "3.1.0",
+    "@rollup/pluginutils": "4.1.0",
+    "vite-plugin-checker": "0.4.9",
+    "transform-ast": "2.4.4"
   },
   "license": "UNLICENSED",
   "name": "no-name",
@@ -285,7 +293,15 @@
       "webpack-merge": "4.2.2",
       "workbox-core": "6.5.0",
       "workbox-precaching": "6.5.0",
-      "workbox-webpack-plugin": "6.5.0"
+      "workbox-webpack-plugin": "6.5.0",
+      "workbox-build": "6.5.0",
+      "@rollup/plugin-replace": "3.1.0",
+      "mkdirp": "1.0.4",
+      "vite": "v3.1.0",
+      "rollup-plugin-brotli": "3.1.0",
+      "@rollup/pluginutils": "4.1.0",
+      "vite-plugin-checker": "0.4.9",
+      "transform-ast": "2.4.4"
     },
     "hash": "9a9f9baa7c33585adb67099a77d8b2518c86cfe796aa1c748bc5b95782569047"
   },

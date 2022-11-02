@@ -11,7 +11,7 @@ public class CircularProgressBar extends Component implements HasSize {
 
     /**
      * Set scaling factor. E.g. if scale is 0.5 and percent is 0.5, progress
-     * indicator will show complete.
+     * indicator will show complete. Default 1.0.
      * 
      * @param scale
      *            double value.
@@ -54,5 +54,29 @@ public class CircularProgressBar extends Component implements HasSize {
      */
     public void setColor(String color) {
         getElement().getStyle().set("--lumo-primary-color", color);
+    }
+
+    /**
+     * Use true to set animation on.
+     * 
+     * @see setDelay
+     * 
+     * @param animation
+     *            boolean value
+     */
+    public void setAnimation(boolean animation) {
+        getElement().setProperty("animation", animation);
+    }
+
+    /**
+     * Set the animation frame delay, default 10ms.
+     * 
+     * @see setAnimation
+     * 
+     * @param delay
+     *            int value in millis.
+     */
+    public void setDelay(int delay) {
+        getElement().setProperty("delay", delay);
     }
 }
