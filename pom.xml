@@ -3,11 +3,11 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.vaadin.artur</groupId>
-    <artifactId>axa-input-text-flow</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <name>AXA Input Text</name>
-    <description>Integration of axa-input-text for Vaadin platform</description>
+    <groupId>org.vaadin.addons.tatu</groupId>
+    <artifactId>circular-progress-bar-flow</artifactId>
+    <version>1.0.0</version>
+    <name>CircularProgressBar Flow</name>
+    <description>ProgressBar of circular shape</description>
 
     <properties>
         <vaadin.version>23.2.6</vaadin.version>
@@ -20,7 +20,7 @@
         <jetty.version>9.4.28.v20200408</jetty.version>
     </properties>
     <organization>
-        <name>###author###</name>
+        <name>Tatu Lund</name>
     </organization>
     <licenses>
         <license>
@@ -95,7 +95,7 @@
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>3.8.1</version>
+            <version>5.1.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -124,6 +124,10 @@
                 <groupId>com.vaadin</groupId>
                 <artifactId>vaadin-maven-plugin</artifactId>
                 <version>${vaadin.version}</version>
+                <configuration>
+                	<pnpmEnable>true</pnpmEnable>
+                	<requireHomeNodeExec>true</requireHomeNodeExec>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
@@ -157,7 +161,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-assembly-plugin</artifactId>
-                        <version>3.1.0</version>
+                        <version>3.3.0</version>
                         <configuration>
                             <appendAssemblyId>false</appendAssemblyId>
                             <descriptors>
@@ -201,6 +205,7 @@
                             </execution>
                         </executions>
                         <configuration>
+                        	<javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
                             <quiet>true</quiet>
                             <additionalparam>-Xdoclint:none</additionalparam>
                         </configuration>
