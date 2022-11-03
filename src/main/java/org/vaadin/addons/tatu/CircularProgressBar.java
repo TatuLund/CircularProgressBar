@@ -9,6 +9,10 @@ import com.vaadin.flow.component.dependency.JsModule;
 @Tag("circular-progress-bar")
 public class CircularProgressBar extends Component implements HasSize {
 
+    public CircularProgressBar() {
+        setBorder(false);
+    }
+
     /**
      * Set scaling factor. E.g. if scale is 0.5 and percent is 0.5, progress
      * indicator will show complete. Default 1.0.
@@ -78,5 +82,18 @@ public class CircularProgressBar extends Component implements HasSize {
      */
     public void setDelay(int delay) {
         getElement().setProperty("delay", delay);
+    }
+
+    /**
+     * Use true to add border in the progress indicator, default false.
+     * 
+     * @param border Boolean value
+     */
+    public void setBorder(boolean border) {
+        if (border) {
+            getElement().removeAttribute("noborder");
+        } else {
+            getElement().setAttribute("noborder", true);
+        }
     }
 }

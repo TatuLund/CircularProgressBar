@@ -1,8 +1,9 @@
 import { css, svg, LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
+import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
 
 @customElement('circular-progress-bar')
-export class CircularProgressBar extends LitElement {
+export class CircularProgressBar extends ThemableMixin(LitElement) {
 
 	@property()
 	scale = 1.0;
@@ -22,41 +23,58 @@ export class CircularProgressBar extends LitElement {
 	@query("#animated")
 	circularProgressbar! : SVGElement;
 
+    // This is needed just for ThemableMixin
+    static get is() {
+        return 'circular-progress-bar';
+    }
+
 	static get styles() {
     	return css`
+            :host {
+                --circle-width: var(--progress-circle-width, 6);
+                --circle-inner-width: calc(var(--circle-width) - 2);
+                --caption-font-size: var(--progress-caption-font-size, 11);
+                --percent-font-size: var(--progress-percent-font-size, 17);
+            }
     		svg #count {
         		fill: var(--lumo-primary-text-color);
     		}
-    		svg #label {
+    		svg #caption {
         		fill: var(--lumo-secondary-text-color);
     		}
+			:host([noborder]) svg #progress-border {
+				display: none;
+			}
+			:host([noborder]) svg #progress-inner {
+				stroke-width: var(--circle-width);
+			}
 		`;
 	}
 
 	updated() {
 		if (this.label) {
-			this.updateLabel(this.label);
+			this.updateCaption(this.label);
 		}
 		if (this.animation) {
-		this.animateProgress(this.percent, this.scale);
+		    this.animateProgress(this.percent, this.scale);
 		} else {
-		this.setProgress(this.percent, this.scale);			
+		    this.setProgress(this.percent, this.scale);			
 		}
 	}
 
-	updateLabel(labelText : string) : void {
+	private updateCaption(captionText : string) : void {
         const countElement = this.circularProgressbar.querySelector('#count');
         countElement?.setAttribute('y', '43');
-        const labelElement = this.circularProgressbar.querySelector('#label');
-        if (!labelElement) {
+        const captionElement = this.circularProgressbar.querySelector('#caption');
+        if (!captionElement) {
             var svg = this.circularProgressbar.querySelector('#animated');
-            this.circularProgressbar.innerHTML = this.circularProgressbar.innerHTML + '<text id="label" x="50" y="59" text-anchor="middle" dy="7" font-size="11">' + labelText + '</text>';
+            this.circularProgressbar.innerHTML = this.circularProgressbar.innerHTML + '<text id="caption" part="caption" x="50" y="59" text-anchor="middle" dy="7" font-size="var(--caption-font-size)">' + captionText + '</text>';
         } else {
-            labelElement.textContent = labelText;
+            captionElement.textContent = captionText;
         }
     }
 
-	setProgress(percent : number, scale : number) {
+	private setProgress(percent : number, scale : number) {
         
         const progressBorder = this.circularProgressbar.querySelector('#progress-border');
         const progressInner = this.circularProgressbar.querySelector('#progress-inner');
@@ -69,7 +87,7 @@ export class CircularProgressBar extends LitElement {
 	    }
     }
 
-	animateProgress(percent : number, scale : number) {
+	private animateProgress(percent : number, scale : number) {
         
         const progressBorder = this.circularProgressbar.querySelector('#progress-border');
         const progressInner = this.circularProgressbar.querySelector('#progress-inner');
@@ -122,10 +140,10 @@ export class CircularProgressBar extends LitElement {
 	render() {
 		return svg`
 			<svg id="animated" viewBox="0 0 100 100">
-				<path id="progress-background" class="circular-progressbar-circle-part" stroke-linecap="round" stroke-width="6" stroke="var(--lumo-contrast-20pct)" fill="none" stroke-dasharray="251.2,251.2" d="M50 10 a 40 40 0 0 1 0 80 a 40 40 0 0 1 0 -80"></path>
-        		<path id="progress-border" class="circular-progressbar-circle-part" stroke-linecap="round" stroke-width="6" stroke="var(--lumo-contrast)" fill="none" stroke-dasharray="0,251.2" d="M50 10 a 40 40 0 0 1 0 80 a 40 40 0 0 1 0 -80"></path>
-        		<path id="progress-inner" class="circular-progressbar-circle-part" stroke-linecap="round" stroke-width="4" stroke="var(--lumo-primary-color)" fill="none" stroke-dasharray="0,251.2" d="M50 10 a 40 40 0 0 1 0 80 a 40 40 0 0 1 0 -80"></path>
-        		<text id="count" x="50" y="50" text-anchor="middle" dy="7" font-size="17">${this.percent*100}%</text>
+				<path id="progress-background" part="progress-background" stroke-linecap="round" stroke-width="var(--circle-width)" stroke="var(--lumo-contrast-20pct)" fill="none" stroke-dasharray="251.2,251.2" d="M50 10 a 40 40 0 0 1 0 80 a 40 40 0 0 1 0 -80"></path>
+        		<path id="progress-border" part="progress-border" stroke-linecap="round" stroke-width="var(--circle-width)" stroke="var(--lumo-contrast)" fill="none" stroke-dasharray="0,251.2" d="M50 10 a 40 40 0 0 1 0 80 a 40 40 0 0 1 0 -80"></path>
+        		<path id="progress-inner" part="progress-inner" stroke-linecap="round" stroke-width="var(--circle-inner-width)" stroke="var(--lumo-primary-color)" fill="none" stroke-dasharray="0,251.2" d="M50 10 a 40 40 0 0 1 0 80 a 40 40 0 0 1 0 -80"></path>
+        		<text id="count" part="percent" x="50" y="50" text-anchor="middle" dy="7" font-size="var(--percent-font-size)">${this.percent*100}%</text>
         	</svg>`;
 	}
 

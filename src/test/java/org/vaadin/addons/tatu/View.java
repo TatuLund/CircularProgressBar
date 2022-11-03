@@ -88,6 +88,11 @@ public class View extends VerticalLayout implements AppShellConfigurator {
             progress.setAnimation(event.getValue());
         });
 
+        Checkbox border = new Checkbox("Border");
+        border.addValueChangeListener(event -> {
+            progress.setBorder(event.getValue());
+        });
+
         Select<Integer> delay = new Select<>();
         delay.setLabel("Delay");
         delay.setItems(5, 10, 15, 20);
@@ -101,7 +106,7 @@ public class View extends VerticalLayout implements AppShellConfigurator {
             progress.setCaption(event.getValue());
         });
 
-        add(progress, button, size, field, animate, delay, caption);
+        add(progress, button, size, field, animate, border, delay, caption);
 
         setSizeFull();
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
