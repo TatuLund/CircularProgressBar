@@ -1,6 +1,7 @@
 import { css, svg, LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
+import { TooltipController } from '@vaadin/component-base/src/tooltip-controller.js';
 
 @customElement('circular-progress-bar')
 export class CircularProgressBar extends ThemableMixin(LitElement) {
@@ -22,6 +23,8 @@ export class CircularProgressBar extends ThemableMixin(LitElement) {
 
 	@query("#animated")
 	circularProgressbar! : SVGElement;
+
+    _tooltipController : TooltipController | undefined;
 
     // This is needed just for ThemableMixin
     static get is() {
@@ -50,6 +53,11 @@ export class CircularProgressBar extends ThemableMixin(LitElement) {
 			}
 		`;
 	}
+
+    firstUpdated() {
+	   this._tooltipController = new TooltipController(this, 'tooltip');
+       this.addController(this._tooltipController);
+    }
 
 	updated() {
 		if (this.label) {
@@ -144,7 +152,8 @@ export class CircularProgressBar extends ThemableMixin(LitElement) {
         		<path id="progress-border" part="progress-border" stroke-linecap="round" stroke-width="var(--circle-width)" stroke="var(--lumo-contrast)" fill="none" stroke-dasharray="0,251.2" d="M50 10 a 40 40 0 0 1 0 80 a 40 40 0 0 1 0 -80"></path>
         		<path id="progress-inner" part="progress-inner" stroke-linecap="round" stroke-width="var(--circle-inner-width)" stroke="var(--lumo-primary-color)" fill="none" stroke-dasharray="0,251.2" d="M50 10 a 40 40 0 0 1 0 80 a 40 40 0 0 1 0 -80"></path>
         		<text id="count" part="percent" x="50" y="50" text-anchor="middle" dy="7" font-size="var(--percent-font-size)">${this.percent*100}%</text>
-        	</svg>`;
+        	</svg>
+            <slot name="tooltip"></slot>`;
 	}
 
 }

@@ -2,19 +2,15 @@ package org.vaadin.addons.tatu;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.vaadin.flow.component.AttachEvent;
-import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.select.Select;
+import com.vaadin.flow.component.shared.Tooltip.TooltipPosition;
 import com.vaadin.flow.component.textfield.IntegerField;
-import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.shared.ui.Transport;
@@ -30,6 +26,7 @@ public class View extends VerticalLayout implements AppShellConfigurator {
         progress.setHeight("200px");
         progress.setPercent(0);
         progress.setCaption("Loading...");
+        progress.setTooltipText("Loading...").withPosition(TooltipPosition.TOP);
 
         Button button = new Button("Load");
         button.addClickListener(event -> {
