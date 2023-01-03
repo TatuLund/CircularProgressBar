@@ -6,10 +6,9 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.page.AppShellConfigurator;
+
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.select.Select;
-import com.vaadin.flow.component.shared.Tooltip.TooltipPosition;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
@@ -17,7 +16,7 @@ import com.vaadin.flow.shared.ui.Transport;
 
 @Push(transport = Transport.LONG_POLLING)
 @Route("")
-public class View extends VerticalLayout implements AppShellConfigurator {
+public class View extends VerticalLayout {
 
     CircularProgressBar progress = new CircularProgressBar();
 
@@ -26,7 +25,6 @@ public class View extends VerticalLayout implements AppShellConfigurator {
         progress.setHeight("200px");
         progress.setPercent(0);
         progress.setCaption("Loading...");
-        progress.setTooltipText("Loading...").withPosition(TooltipPosition.TOP);
 
         Button button = new Button("Load");
         button.addClickListener(event -> {

@@ -4,12 +4,11 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
-import com.vaadin.flow.component.shared.HasTooltip;
 
 @JsModule("./circular-progress-bar.ts")
 @Tag("circular-progress-bar")
 public class CircularProgressBar extends Component
-        implements HasSize, HasTooltip {
+        implements HasSize {
 
     public CircularProgressBar() {
         setBorder(false);
