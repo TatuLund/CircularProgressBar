@@ -1,10 +1,11 @@
-import { css, svg, LitElement } from 'lit';
+import { css, html, LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
+import { ControllerMixin } from '@vaadin/component-base/src/controller-mixin.js';
 import { TooltipController } from '@vaadin/component-base/src/tooltip-controller.js';
 
 @customElement('circular-progress-bar')
-export class CircularProgressBar extends ThemableMixin(LitElement) {
+export class CircularProgressBar extends ThemableMixin(ControllerMixin(LitElement)) {
 
 	@property()
 	scale = 1.0;
@@ -146,7 +147,7 @@ export class CircularProgressBar extends ThemableMixin(LitElement) {
     }
 
 	render() {
-		return svg`
+		return html`
 			<svg id="animated" viewBox="0 0 100 100">
 				<path id="progress-background" part="progress-background" stroke-linecap="round" stroke-width="var(--circle-width)" stroke="var(--lumo-contrast-20pct)" fill="none" stroke-dasharray="251.2,251.2" d="M50 10 a 40 40 0 0 1 0 80 a 40 40 0 0 1 0 -80"></path>
         		<path id="progress-border" part="progress-border" stroke-linecap="round" stroke-width="var(--circle-width)" stroke="var(--lumo-contrast)" fill="none" stroke-dasharray="0,251.2" d="M50 10 a 40 40 0 0 1 0 80 a 40 40 0 0 1 0 -80"></path>
