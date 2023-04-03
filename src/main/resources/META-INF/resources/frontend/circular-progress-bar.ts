@@ -1,11 +1,10 @@
 import { css, html, LitElement } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
-import { ControllerMixin } from '@vaadin/component-base/src/controller-mixin.js';
 import { TooltipController } from '@vaadin/component-base/src/tooltip-controller.js';
 
 @customElement('circular-progress-bar')
-export class CircularProgressBar extends ThemableMixin(ControllerMixin(LitElement)) {
+export class CircularProgressBar extends ThemableMixin(LitElement) {
 
 	@property()
 	scale = 1.0;
