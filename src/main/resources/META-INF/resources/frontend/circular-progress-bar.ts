@@ -34,22 +34,25 @@ export class CircularProgressBar extends ThemableMixin(LitElement) {
 	static get styles() {
     	return css`
             :host {
-                --circle-width: var(--progress-circle-width, 6);
-                --circle-inner-width: calc(var(--circle-width) - 2);
-                --caption-font-size: var(--progress-caption-font-size, 11);
-                --percent-font-size: var(--progress-percent-font-size, 17);
+                --_circle-width: var(--circle-width, var(--progress-circle-width, 6));
+                --_circle-inner-width: var(--circle-inner-width, calc(var(--_circle-width) - 2));
+				--_circle-color: var(--circle-color, var(--lumo-primary-color, hsl(214, 100%, 48%)));
+				--_circle-background-color: var(--circle-background-color, var(--lumo-contrast-20pct, hsla(214, 53%, 23%, 0.16)));
+				--_circle-border-color: var(--circle-border-color, var(--lumo-contrast, hsl(214, 35%, 15%)));
+                --_caption-font-size: var(--circle-font-size, var(--progress-caption-font-size, 11));
+                --_percent-font-size: var(--percent-font-size, var(--progress-percent-font-size, 17));
             }
     		svg #count {
-        		fill: var(--lumo-primary-text-color);
+        		fill: var(--percent-text-color, var(--lumo-primary-text-color, hsl(214, 100%, 43%)));
     		}
     		svg #caption {
-        		fill: var(--lumo-secondary-text-color);
+        		fill: var(--caption-text-color, var(--lumo-secondary-text-color, hsla(214, 42%, 18%, 0.69)));
     		}
 			:host([noborder]) svg #progress-border {
 				display: none;
 			}
 			:host([noborder]) svg #progress-inner {
-				stroke-width: var(--circle-width);
+				stroke-width: var(--_circle-width);
 			}
 		`;
 	}
@@ -76,7 +79,7 @@ export class CircularProgressBar extends ThemableMixin(LitElement) {
         const captionElement = this.circularProgressbar.querySelector('#caption');
         if (!captionElement) {
             var svg = this.circularProgressbar.querySelector('#animated');
-            this.circularProgressbar.innerHTML = this.circularProgressbar.innerHTML + '<text id="caption" part="caption" x="50" y="59" text-anchor="middle" dy="7" font-size="var(--caption-font-size)">' + captionText + '</text>';
+            this.circularProgressbar.innerHTML = this.circularProgressbar.innerHTML + '<text id="caption" part="caption" x="50" y="59" text-anchor="middle" dy="7" font-size="var(--_caption-font-size)">' + captionText + '</text>';
         } else {
             captionElement.textContent = captionText;
         }
@@ -148,10 +151,10 @@ export class CircularProgressBar extends ThemableMixin(LitElement) {
 	render() {
 		return html`
 			<svg id="animated" viewBox="0 0 100 100">
-				<path id="progress-background" part="progress-background" stroke-linecap="round" stroke-width="var(--circle-width)" stroke="var(--lumo-contrast-20pct)" fill="none" stroke-dasharray="251.2,251.2" d="M50 10 a 40 40 0 0 1 0 80 a 40 40 0 0 1 0 -80"></path>
-        		<path id="progress-border" part="progress-border" stroke-linecap="round" stroke-width="var(--circle-width)" stroke="var(--lumo-contrast)" fill="none" stroke-dasharray="0,251.2" d="M50 10 a 40 40 0 0 1 0 80 a 40 40 0 0 1 0 -80"></path>
-        		<path id="progress-inner" part="progress-inner" stroke-linecap="round" stroke-width="var(--circle-inner-width)" stroke="var(--lumo-primary-color)" fill="none" stroke-dasharray="0,251.2" d="M50 10 a 40 40 0 0 1 0 80 a 40 40 0 0 1 0 -80"></path>
-        		<text id="count" part="percent" x="50" y="50" text-anchor="middle" dy="7" font-size="var(--percent-font-size)">${this.percent*100}%</text>
+				<path id="progress-background" part="progress-background" stroke-linecap="round" stroke-width="var(--_circle-width)" stroke="var(--_circle-background-color)" fill="none" stroke-dasharray="251.2,251.2" d="M50 10 a 40 40 0 0 1 0 80 a 40 40 0 0 1 0 -80"></path>
+        		<path id="progress-border" part="progress-border" stroke-linecap="round" stroke-width="var(--_circle-width)" stroke="var(--_circle-border-color)" fill="none" stroke-dasharray="0,251.2" d="M50 10 a 40 40 0 0 1 0 80 a 40 40 0 0 1 0 -80"></path>
+        		<path id="progress-inner" part="progress-inner" stroke-linecap="round" stroke-width="var(--_circle-inner-width)" stroke="var(--_circle-color)" fill="none" stroke-dasharray="0,251.2" d="M50 10 a 40 40 0 0 1 0 80 a 40 40 0 0 1 0 -80"></path>
+        		<text id="count" part="percent" x="50" y="50" text-anchor="middle" dy="7" font-size="var(--_percent-font-size)">${this.percent*100}%</text>
         	</svg>
             <slot name="tooltip"></slot>`;
 	}

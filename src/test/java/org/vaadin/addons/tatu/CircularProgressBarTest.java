@@ -46,7 +46,7 @@ public class CircularProgressBarTest {
         CircularProgressBar progress = new CircularProgressBar();
         progress.setColor("red");
         Assert.assertEquals("red",
-                progress.getElement().getStyle().get("--lumo-primary-color"));
+                progress.getElement().getStyle().get("--circle-color"));
     }
 
     @Test

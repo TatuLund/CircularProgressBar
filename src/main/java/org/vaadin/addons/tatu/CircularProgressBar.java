@@ -59,7 +59,7 @@ public class CircularProgressBar extends Component
      *            CSS compatible color string.
      */
     public void setColor(String color) {
-        getElement().getStyle().set("--lumo-primary-color", color);
+        getElement().getStyle().set("--circle-color", color);
     }
 
     /**
