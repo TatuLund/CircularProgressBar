@@ -1,106 +1,90 @@
 package org.vaadin.addons.tatu;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.page.AppShellConfigurator;
-import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.shared.Tooltip.TooltipPosition;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.shared.ui.Transport;
+import com.vaadin.flow.signals.local.ValueSignal;
 
-@Push(transport = Transport.LONG_POLLING)
 @Route("")
-public class View extends VerticalLayout implements AppShellConfigurator {
+public class View extends VerticalLayout {
 
     CircularProgressBar progress = new CircularProgressBar();
+    ValueSignal<Double> percentSignal = new ValueSignal<>(0.0);
+    ValueSignal<String> captionSignal = new ValueSignal<>("");
+    ValueSignal<String> colorSignal = new ValueSignal<>("red");
+    ValueSignal<Boolean> animationSignal = new ValueSignal<>(false);
+    ValueSignal<String> borderSignal = new ValueSignal<>(null);
+    ValueSignal<Integer> delaySignal = new ValueSignal<>(10);
+    ValueSignal<String> widthSignal = new ValueSignal<String>("200px");
+    ValueSignal<String> heightSignal = new ValueSignal<String>("200px");
 
     public View() {
-        progress.setWidth("200px");
-        progress.setHeight("200px");
-        progress.setPercent(0);
-        progress.setCaption("Loading...");
+        progress.bindWidth(widthSignal);
+        progress.bindHeight(heightSignal);
+        progress.bindPercent(percentSignal);
+        progress.bindCaption(captionSignal);
+        progress.bindColor(colorSignal);
+        progress.bindAnimation(animationSignal);
+        progress.bindBorder(borderSignal);
+        progress.bindDelay(delaySignal);
         progress.setTooltipText("Loading...").withPosition(TooltipPosition.TOP);
 
-        Button button = new Button("Load");
+        var button = new Button("Load");
         button.addClickListener(event -> {
-            progress.setPercent(0);
-            progress.setCaption("Loading...");
-            Runnable runnable = () -> {
-                AtomicInteger percent = new AtomicInteger(5);
-                while (percent.get() <= 100) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                    }
-                    getUI().ifPresent(ui -> ui.access(() -> {
-                        progress.setPercent(percent.getAndAdd(5) / 100.0);
-                        if (percent.get() <= 25) {
-                            progress.setColor("red");
-                        } else if (percent.get() <= 50) {
-                            progress.setColor("orange");
-                        } else if (percent.get() > 75) {
-                            progress.setColor("green");
-                        } else {
-                            progress.setColor("yellow");
-                        }
-                    }));
-                }
-                getUI().ifPresent(ui -> ui.access(() -> {
-                    progress.setCaption("Done!");
-                }));
-            };
-
+            percentSignal.set(0.0);
+            captionSignal.set("Loading...");
             Thread thread = new Thread(runnable);
             thread.start();
         });
 
-        Select<String> size = new Select<>();
+        var size = new Select<String>();
         size.setLabel("Size");
         size.setItems("100px", "150px", "200px", "250px");
 
         size.addValueChangeListener(event -> {
-            progress.setWidth(event.getValue());
-            progress.setHeight(event.getValue());
+            widthSignal.set(event.getValue());
+            heightSignal.set(event.getValue());
         });
 
-        IntegerField field = new IntegerField("Percent");
+        var field = new IntegerField("Percent");
         field.setMax(100);
         field.setMin(0);
         field.setStep(1);
-        field.setHasControls(true);
+        //field.setHasControls(true);
         field.setSuffixComponent(new Span("%"));
         field.addValueChangeListener(event -> {
-            progress.setPercent(event.getValue() / 100.0);
+            if (event.getValue() != null) {
+                percentSignal.set(event.getValue() / 100.0);
+            }
         });
 
-        Checkbox animate = new Checkbox("Animate");
+        var animate = new Checkbox("Animate");
         animate.addValueChangeListener(event -> {
-            progress.setAnimation(event.getValue());
+            animationSignal.set(event.getValue());
         });
 
-        Checkbox border = new Checkbox("Border");
+        var border = new Checkbox("Border");
         border.addValueChangeListener(event -> {
-            progress.setBorder(event.getValue());
+            borderSignal.set(event.getValue() ? null : "true");
         });
 
-        Select<Integer> delay = new Select<>();
+        var delay = new Select<Integer>();
         delay.setLabel("Delay");
         delay.setItems(5, 10, 15, 20);
-
         delay.addValueChangeListener(event -> {
-            progress.setDelay(event.getValue());
+            delaySignal.set(event.getValue());
         });
 
-        TextField caption = new TextField("Caption");
+        var caption = new TextField("Caption");
         caption.addValueChangeListener(event -> {
-            progress.setCaption(event.getValue());
+            captionSignal.set(event.getValue());
         });
 
         add(progress, button, size, field, animate, border, delay, caption);
@@ -109,5 +93,27 @@ public class View extends VerticalLayout implements AppShellConfigurator {
         setDefaultHorizontalComponentAlignment(Alignment.CENTER);
         setJustifyContentMode(JustifyContentMode.CENTER);
     }
+
+    Runnable runnable = () -> {
+        percentSignal.set(0.05);
+        while (percentSignal.peek() <= 1.0) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+            }
+            percentSignal.set(percentSignal.peek() + 0.05);
+            if (percentSignal.peek() <= 0.25) {
+                colorSignal.set("red");
+            } else if (percentSignal.peek() <= 0.5) {
+                colorSignal.set("orange");
+            } else if (percentSignal.peek() > 0.75) {
+                colorSignal.set("green");
+            } else {
+                colorSignal.set("yellow");
+            }
+        }
+        captionSignal.set("Done!");
+    };
+
 
 }

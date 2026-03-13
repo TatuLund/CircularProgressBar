@@ -63,26 +63,24 @@ export class CircularProgressBar extends ThemableMixin(LitElement) {
     }
 
 	updated() {
+		this.redraw();
+	}
+
+	redraw() {
 		if (this.label) {
 			this.updateCaption(this.label);
 		}
 		if (this.animation) {
 		    this.animateProgress(this.percent, this.scale);
 		} else {
-		    this.setProgress(this.percent, this.scale);			
-		}
+		    this.setProgress(this.percent, this.scale);		
+		}	
 	}
 
 	private updateCaption(captionText : string) : void {
         const countElement = this.circularProgressbar.querySelector('#count');
         countElement?.setAttribute('y', '43');
         const captionElement = this.circularProgressbar.querySelector('#caption');
-        if (!captionElement) {
-            var svg = this.circularProgressbar.querySelector('#animated');
-            this.circularProgressbar.innerHTML = this.circularProgressbar.innerHTML + '<text id="caption" part="caption" x="50" y="59" text-anchor="middle" dy="7" font-size="var(--_caption-font-size)">' + captionText + '</text>';
-        } else {
-            captionElement.textContent = captionText;
-        }
     }
 
 	private setProgress(percent : number, scale : number) {
@@ -93,9 +91,6 @@ export class CircularProgressBar extends ThemableMixin(LitElement) {
 
         progressBorder?.setAttribute('stroke-dasharray', 251.2 * percent * scale + ',251.2');
         progressInner?.setAttribute('stroke-dasharray', 251.2 * percent * scale + ',251.2');
-        if (text) {
-	        text.textContent = Math.round(percent * 100) + '%';
-	    }
     }
 
 	private animateProgress(percent : number, scale : number) {
@@ -116,32 +111,20 @@ export class CircularProgressBar extends ThemableMixin(LitElement) {
                 if (animationStep >= 251.2 * percent * scale) {
                     progressBorder?.setAttribute('stroke-dasharray', 251.2 * percent * scale + ',251.2');
                     progressInner?.setAttribute('stroke-dasharray', 251.2 * percent * scale + ',251.2');
-                    if (text) {
-						text.textContent = Math.round(percent * 100) + '%';
-					}
                     clearInterval(id);
                 } else {
                     progressBorder?.setAttribute('stroke-dasharray', animationStep + ',251.2');
                     progressInner?.setAttribute('stroke-dasharray', animationStep + ',251.2');
-                    if (text) {
-                      	text.textContent = Math.round(animationStep / 251.2 * 100) + '%';
-    				}
                     animationStep++;
                 }
             } else {
                 if (animationStep < 251.2 * percent * scale) {
                     progressBorder?.setAttribute('stroke-dasharray', 251.2 * percent * scale + ',251.2');
                     progressInner?.setAttribute('stroke-dasharray', 251.2 * percent * scale + ',251.2');
-                    if (text) {
-	                    text.textContent = Math.round(percent * 100) + '%';
-	    			}
                     clearInterval(id);
                 } else {
                     progressBorder?.setAttribute('stroke-dasharray', animationStep + ',251.2');
                     progressInner?.setAttribute('stroke-dasharray', animationStep + ',251.2');
-                    if (text) {
-	                    text.textContent = Math.round(animationStep / 251.2 * 100) + '%';
-		    		}
                     animationStep--;
                 }
             }
@@ -154,7 +137,8 @@ export class CircularProgressBar extends ThemableMixin(LitElement) {
 				<path id="progress-background" part="progress-background" stroke-linecap="round" stroke-width="var(--_circle-width)" stroke="var(--_circle-background-color)" fill="none" stroke-dasharray="251.2,251.2" d="M50 10 a 40 40 0 0 1 0 80 a 40 40 0 0 1 0 -80"></path>
         		<path id="progress-border" part="progress-border" stroke-linecap="round" stroke-width="var(--_circle-width)" stroke="var(--_circle-border-color)" fill="none" stroke-dasharray="0,251.2" d="M50 10 a 40 40 0 0 1 0 80 a 40 40 0 0 1 0 -80"></path>
         		<path id="progress-inner" part="progress-inner" stroke-linecap="round" stroke-width="var(--_circle-inner-width)" stroke="var(--_circle-color)" fill="none" stroke-dasharray="0,251.2" d="M50 10 a 40 40 0 0 1 0 80 a 40 40 0 0 1 0 -80"></path>
-        		<text id="count" part="percent" x="50" y="50" text-anchor="middle" dy="7" font-size="var(--_percent-font-size)">${this.percent*100}%</text>
+        		<text id="count" part="percent" x="50" y="50" text-anchor="middle" dy="7" font-size="var(--_percent-font-size)">${Math.round(this.percent*100)}%</text>
+				<text id="caption" part="caption" x="50" y="59" text-anchor="middle" dy="7" font-size="var(--_caption-font-size)">${this.label}</text>
         	</svg>
             <slot name="tooltip"></slot>`;
 	}
