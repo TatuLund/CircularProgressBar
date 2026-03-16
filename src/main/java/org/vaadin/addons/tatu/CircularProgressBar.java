@@ -175,11 +175,7 @@ public class CircularProgressBar extends Component
      */ 
     public void bindBorder(Signal<Boolean> signal) {
         Signal.effect(this, () -> {
-            if (signal.get()) {
-                getElement().removeAttribute("noborder");
-            } else {
-                getElement().setAttribute("noborder", true);
-            }
+            setBorder(signal.get());
         });
     }
 }
