@@ -20,7 +20,7 @@ public class View extends VerticalLayout {
     ValueSignal<String> captionSignal = new ValueSignal<>("");
     ValueSignal<String> colorSignal = new ValueSignal<>("red");
     ValueSignal<Boolean> animationSignal = new ValueSignal<>(false);
-    ValueSignal<String> borderSignal = new ValueSignal<>(null);
+    ValueSignal<Boolean> borderSignal = new ValueSignal<>(false);
     ValueSignal<Integer> delaySignal = new ValueSignal<>(10);
     ValueSignal<String> widthSignal = new ValueSignal<String>("200px");
     ValueSignal<String> heightSignal = new ValueSignal<String>("200px");
@@ -72,7 +72,7 @@ public class View extends VerticalLayout {
 
         var border = new Checkbox("Border");
         border.addValueChangeListener(event -> {
-            borderSignal.set(event.getValue() ? null : "true");
+            borderSignal.set(event.getValue());
         });
 
         var delay = new Select<Integer>();

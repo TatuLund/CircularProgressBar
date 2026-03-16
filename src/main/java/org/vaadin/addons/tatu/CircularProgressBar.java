@@ -171,10 +171,15 @@ public class CircularProgressBar extends Component
      * Bind the border attribute to a signal.
      * 
      * @param signal
-     *            Signal<String> value, "true" or null
-     * @return SignalBinding<String> instance
-     */
-    public SignalBinding<String> bindBorder(Signal<String> signal) {
-        return getElement().bindAttribute("noborder", signal);
+     *            Signal<Boolean> value
+     */ 
+    public void bindBorder(Signal<Boolean> signal) {
+        Signal.effect(this, () -> {
+            if (signal.get()) {
+                getElement().removeAttribute("noborder");
+            } else {
+                getElement().setAttribute("noborder", true);
+            }
+        });
     }
 }
